@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchToken } from '../redux/actions';
 import { Link } from 'react-router-dom';
+import { fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
