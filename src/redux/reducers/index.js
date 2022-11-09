@@ -1,15 +1,7 @@
-const INITIAL_STATE = {
-  name: '',
-  assertions: '',
-  score: '',
-  gravatarEmail: '',
-};
+import { combineReducers } from 'redux';
+import player from './player';
+import token from './token';
 
-const rootReducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-  default:
-    return state;
-  }
-};
+const rootReducer = combineReducers({ player, token });
 
 export default rootReducer;
