@@ -6,7 +6,7 @@
     "node": "16"
   },
   "dependencies": {
-    "@redux-devtools/extension": "3.2.2",
+    "@redux-devtools/extension": "^3.2.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^13.0.0",
     "crypto-js": "^4.1.1",
