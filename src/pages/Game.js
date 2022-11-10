@@ -30,10 +30,10 @@ class Game extends React.Component {
 
     answersArr.push(
       questionList[currQuestion].correct_answer,
-      questionList[currQuestion].incorrect_answers[0],
-      questionList[currQuestion].incorrect_answers[1],
-      questionList[currQuestion].incorrect_answers[2],
     );
+    questionList[currQuestion].incorrect_answers.forEach((element) => {
+      answersArr.push(element);
+    });
     const reorder = 0.5;
     const reorderedArr = answersArr.sort(() => Math.random() - reorder);
 
@@ -63,25 +63,30 @@ class Game extends React.Component {
   render() {
     const { currQuestion } = this.state;
     const { questionList } = this.props;
-    return (
-      <div>
-        <Header />
-        <h1>Game</h1>
-        {questionList.length > 0
-          && (
-            <div>
-              <h1 name="category" data-testid="question-category">
-                {questionList[currQuestion].category}
-              </h1>
-              <h3 name="text" data-testid="question-text">
-                {questionList[currQuestion].question}
-              </h3>
-              <div id="respostas">
-                {this.mapButtons}
-              </div>
+    if (questionList.length > 0) {
+      return (
+        <div>
+          <Header />
+          <h1>Game</h1>
+          <div>
+            <h1 name="category" data-testid="question-category">
+              {questionList[currQuestion].category}
+            </h1>
+            <h3 name="text" data-testid="question-text">
+              {questionList[currQuestion].question}
+            </h3>
+            <div id="respostas">
+              { this.mapButtons() }
             </div>
-          )}
-      </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <>
+        <Header />
+        <h1>carregando perguntas</h1>
+      </>
     );
   }
 }
