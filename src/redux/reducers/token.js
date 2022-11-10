@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   token: '',
 };
 
-const player = (state = INITIAL_STATE, action) => {
+const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case REQUEST_TOKEN_START:
     return {
@@ -21,4 +21,4 @@ const player = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default player;
+export default token;
