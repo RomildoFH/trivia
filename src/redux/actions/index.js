@@ -57,8 +57,9 @@ export const fetchGravatar = (url) => async (dispatch) => {
   return dispatch(receiveGravatar(response.url));
 };
 
-export const fetchQuestions = () => async (dispatch) => {
+export const fetchQuestions = (token) => async (dispatch) => {
   dispatch(requestQuestions());
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
   const response = await questionResponse(token);
   return dispatch(receiveQuestions(response));
+};

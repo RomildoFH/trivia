@@ -16,16 +16,17 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const { dispatch } = this.props;
-    await dispatch(fetchQuestions());
+    const { dispatch, token } = this.props;
+    await dispatch(fetchQuestions(token));
     this.getAnswers();
   }
 
   getAnswers = () => {
     const { currQuestion } = this.state;
     const { questionList } = this.props;
+    console.log(questionList);
     const answersArr = [];
-    const savedAnswer = questionList[currQuestion].correct_answer;
+    const savedAnswer = questionList[0].correct_answer;
 
     answersArr.push(
       questionList[currQuestion].correct_answer,
@@ -61,13 +62,12 @@ class Game extends React.Component {
 
   render() {
     const { currQuestion } = this.state;
-    const { questionList, token } = this.props;
-
+    const { questionList } = this.props;
     return (
       <div>
-       <Header />
+        <Header />
         <h1>Game</h1>
-        {questionList
+        {questionList.length > 0
           && (
             <div>
               <h1 name="category" data-testid="question-category">

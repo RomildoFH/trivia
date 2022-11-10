@@ -1,7 +1,7 @@
 import { REQUEST_QUESTIONS_START, RECEIVE_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
-  questionsList: [],
+  questionList: [],
 };
 
 const questions = (state = INITIAL_STATE, action) => {
@@ -13,7 +13,7 @@ const questions = (state = INITIAL_STATE, action) => {
   case RECEIVE_QUESTIONS:
     return {
       ...state,
-      questionsList: action.questions.results,
+      questionList: action.questions.results,
     };
 
   default:
