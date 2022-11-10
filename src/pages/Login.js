@@ -87,7 +87,7 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-settings"
             >
-              Configurações
+              Setting
             </button>
           </Link>
         </form>
