@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { fetchToken } from '../redux/actions';
+import { actionLogin, fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -49,9 +49,16 @@ class Login extends React.Component {
     return validation;
   };
 
-  fetchTokenFun = async () => {
-    const { dispatch, history } = this.props;
-    await dispatch(fetchToken());
+  fetchTokenFun = () => {
+    const { name, email } = this.state;
+    const { dispatch } = this.props;
+    dispatch(fetchToken());
+    dispatch(actionLogin(name, email));
+  };
+
+  handleClick = async () => {
+    const { history } = this.props;
+    await this.fetchTokenFun();
     history.push('/game');
   };
 
@@ -78,7 +85,7 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ isDisabled }
-            onClick={ this.fetchTokenFun }
+            onClick={ this.handleClick }
           >
             Play
           </button>
