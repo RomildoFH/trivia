@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 import Button from '../components/AnswerButton';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   constructor() {
@@ -64,6 +65,8 @@ class Game extends React.Component {
 
     return (
       <div>
+       <Header />
+        <h1>Game</h1>
         {questionList
           && (
             <div>

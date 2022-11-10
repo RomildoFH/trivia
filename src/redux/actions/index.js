@@ -5,9 +5,13 @@ export const REQUEST_TOKEN_START = 'REQUEST_TOKEN_START';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 export const REQUEST_QUESTIONS_START = 'REQUEST_QUESTIONS_START';
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+export const REQUEST_GRAVATAR_START = 'REQUEST_GRAVATAR_START';
+export const RECEIVE_GRAVATAR = 'RECEIVE_GRAVATAR';
 
-export const actionLogin = () => ({
+export const actionLogin = (name, email) => ({
   type: FAZER_LOGIN,
+  name,
+  gravatarEmail: email,
 });
 
 export const requestToken = () => ({
@@ -38,9 +42,23 @@ export const fetchToken = () => async (dispatch) => {
   return dispatch(receiveToken(tokenPromise));
 };
 
+export const requestGravatar = () => ({
+  type: REQUEST_GRAVATAR_START,
+});
+
+export const receiveGravatar = (gravatarEmail) => ({
+  type: RECEIVE_GRAVATAR,
+  gravatarEmail,
+});
+
+export const fetchGravatar = (url) => async (dispatch) => {
+  dispatch(requestGravatar());
+  const response = await fetch(url);
+  return dispatch(receiveGravatar(response.url));
+};
+
 export const fetchQuestions = () => async (dispatch) => {
   dispatch(requestQuestions());
   const token = localStorage.getItem('token');
   const response = await questionResponse(token);
   return dispatch(receiveQuestions(response));
-};
