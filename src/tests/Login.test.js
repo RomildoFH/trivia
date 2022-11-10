@@ -69,7 +69,7 @@ describe('Página de login', () => {
   });
 
   it('Verifica se ao clicar no botão Play a função fetch é chamada e é feito redirecionamento para pagina Game', async () => {
-    const { history: { location: { pathname } } } = renderWithRouterAndRedux(<App />);
+    renderWithRouterAndRedux(<App />);
 
     const inputEmail = screen.getByTestId('input-gravatar-email');
     const inputName = screen.getByTestId('input-player-name');
