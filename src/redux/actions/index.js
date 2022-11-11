@@ -36,10 +36,14 @@ const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 export const fetchToken = () => async (dispatch) => {
   dispatch(requestToken());
-  const response = await fetch(apiToken);
-  const tokenPromise = await response.json();
-  localStorage.setItem('token', tokenPromise.token);
-  return dispatch(receiveToken(tokenPromise));
+  try {
+    const response = await fetch(apiToken);
+    const tokenPromise = await response.json();
+    localStorage.setItem('token', tokenPromise.token);
+    return dispatch(receiveToken(tokenPromise));
+  } catch (error) {
+    return error;
+  }
 };
 
 export const requestGravatar = () => ({
@@ -53,13 +57,20 @@ export const receiveGravatar = (gravatarEmail) => ({
 
 export const fetchGravatar = (url) => async (dispatch) => {
   dispatch(requestGravatar());
-  const response = await fetch(url);
-  return dispatch(receiveGravatar(response.url));
+  try {
+    const response = await fetch(url);
+    return dispatch(receiveGravatar(response.url));
+  } catch (error) {
+    return error;
+  }
 };
 
 export const fetchQuestions = (token) => async (dispatch) => {
   dispatch(requestQuestions());
-  // const token = localStorage.getItem('token');
-  const response = await questionResponse(token);
-  return dispatch(receiveQuestions(response));
+  try {
+    const response = await questionResponse(token);
+    return dispatch(receiveQuestions(response));
+  } catch (error) {
+    return error;
+  }
 };

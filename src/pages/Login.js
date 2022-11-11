@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { actionLogin, fetchToken } from '../redux/actions';
+import { actionLogin, fetchToken, fetchQuestions } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -49,17 +49,22 @@ class Login extends React.Component {
     return validation;
   };
 
-  fetchTokenFun = () => {
+  fetchTokenFun = async () => {
     const { name, email } = this.state;
-    const { dispatch } = this.props;
-    dispatch(fetchToken());
-    dispatch(actionLogin(name, email));
+    const { dispatch, token } = this.props;
+    await dispatch(fetchToken());
+    await dispatch(fetchQuestions(token));
+    await dispatch(actionLogin(name, email));
   };
 
   handleClick = async () => {
-    const { history } = this.props;
+    const { history, dispatch, token } = this.props;
     await this.fetchTokenFun();
+    // setTimeout(() => {
+    //   history.push('/game');
+    // }, 5000);
     history.push('/game');
+    // await dispatch(fetchQuestions(token));
   };
 
   render() {
@@ -108,11 +113,12 @@ Login.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (globalState) => ({
-  name: globalState.name,
-  assertions: globalState.assertions,
-  score: globalState.score,
-  gravatarEmail: globalState.gravatarEmail,
-  token: globalState.token,
+  name: globalState.player.name,
+  assertions: globalState.player.assertions,
+  score: globalState.player.score,
+  gravatarEmail: globalState.player.gravatarEmail,
+  token: globalState.token.token,
+  questionList: globalState.questions.questionList,
 });
 
 export default connect(mapStateToProps)(Login);

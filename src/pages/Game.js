@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../redux/actions';
 import Button from '../components/AnswerButton';
 import Header from '../components/Header';
 
@@ -15,16 +14,16 @@ class Game extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    const { dispatch, token } = this.props;
-    await dispatch(fetchQuestions(token));
-    this.getAnswers();
+  componentDidMount() {
+    const { questionList } = this.props;
+    if (questionList.length > 0) {
+      this.getAnswers();
+    }
   }
 
   getAnswers = () => {
     const { currQuestion } = this.state;
     const { questionList } = this.props;
-    console.log(questionList);
     const answersArr = [];
     const savedAnswer = questionList[0].correct_answer;
 
@@ -47,7 +46,7 @@ class Game extends React.Component {
     const { currAnswers, correctAnswer } = this.state;
     const num = -1;
     let incorrectIndex = num;
-    currAnswers.map((answer, i) => {
+    return currAnswers.map((answer, i) => {
       if (answer === correctAnswer) {
         return <Button key={ i } label={ answer } testid="correct-answer" />;
       }
@@ -63,30 +62,25 @@ class Game extends React.Component {
   render() {
     const { currQuestion } = this.state;
     const { questionList } = this.props;
-    if (questionList.length > 0) {
-      return (
-        <div>
-          <Header />
-          <h1>Game</h1>
-          <div>
-            <h1 name="category" data-testid="question-category">
-              {questionList[currQuestion].category}
-            </h1>
-            <h3 name="text" data-testid="question-text">
-              {questionList[currQuestion].question}
-            </h3>
-            <div id="respostas">
-              { this.mapButtons() }
-            </div>
+    return (
+      <div>
+        <Header />
+        <h1>Game</h1>
+        {
+          questionList.length > 0
+          && <div>
+          <h1 name="category" data-testid="question-category">
+            {questionList[currQuestion].category}
+          </h1>
+          <h3 name="text" data-testid="question-text">
+            {questionList[currQuestion].question}
+          </h3>
+          <div id="respostas">
+            { this.mapButtons() }
           </div>
         </div>
-      );
-    }
-    return (
-      <>
-        <Header />
-        <h1>carregando perguntas</h1>
-      </>
+        }
+      </div>
     );
   }
 }
