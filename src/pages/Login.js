@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { actionLogin, fetchToken, fetchQuestions } from '../redux/actions';
+import { actionLogin, fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -51,20 +51,15 @@ class Login extends React.Component {
 
   fetchTokenFun = async () => {
     const { name, email } = this.state;
-    const { dispatch, token } = this.props;
+    const { dispatch } = this.props;
     await dispatch(fetchToken());
-    await dispatch(fetchQuestions(token));
     await dispatch(actionLogin(name, email));
   };
 
   handleClick = async () => {
-    const { history, dispatch, token } = this.props;
+    const { history } = this.props;
     await this.fetchTokenFun();
-    // setTimeout(() => {
-    //   history.push('/game');
-    // }, 5000);
     history.push('/game');
-    // await dispatch(fetchQuestions(token));
   };
 
   render() {
@@ -119,6 +114,8 @@ const mapStateToProps = (globalState) => ({
   gravatarEmail: globalState.player.gravatarEmail,
   token: globalState.token.token,
   questionList: globalState.questions.questionList,
+  currAnswers: globalState.answers.currAnswers,
+  correctAnswer: globalState.answers.correctAnswer,
 });
 
 export default connect(mapStateToProps)(Login);

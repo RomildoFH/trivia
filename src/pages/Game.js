@@ -3,47 +3,36 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../components/AnswerButton';
 import Header from '../components/Header';
+import { fetchQuestions, getAnswers } from '../redux/actions';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
       currQuestion: 0,
-      currAnswers: [],
-      correctAnswer: '',
+      isLoading: true,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { currQuestion } = this.state;
+    const { token, dispatch, history } = this.props;
+    await dispatch(fetchQuestions(token));
     const { questionList } = this.props;
-    if (questionList.length > 0) {
-      this.getAnswers();
+    if (questionList.length === 0) {
+      localStorage.removeItem('token');
+      history.push('/');
+    } else {
+      await dispatch(getAnswers(questionList, currQuestion));
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 
-  getAnswers = () => {
-    const { currQuestion } = this.state;
-    const { questionList } = this.props;
-    const answersArr = [];
-    const savedAnswer = questionList[0].correct_answer;
-
-    answersArr.push(
-      questionList[currQuestion].correct_answer,
-    );
-    questionList[currQuestion].incorrect_answers.forEach((element) => {
-      answersArr.push(element);
-    });
-    const reorder = 0.5;
-    const reorderedArr = answersArr.sort(() => Math.random() - reorder);
-
-    this.setState({
-      currAnswers: reorderedArr,
-      correctAnswer: savedAnswer,
-    });
-  };
-
   mapButtons = () => {
-    const { currAnswers, correctAnswer } = this.state;
+    const { currAnswers, correctAnswer } = this.props;
+    console.log(currAnswers, correctAnswer);
     const num = -1;
     let incorrectIndex = num;
     return currAnswers.map((answer, i) => {
@@ -60,26 +49,26 @@ class Game extends React.Component {
   };
 
   render() {
-    const { currQuestion } = this.state;
+    const { currQuestion, isLoading } = this.state;
     const { questionList } = this.props;
     return (
       <div>
         <Header />
         <h1>Game</h1>
-        {
-          questionList.length > 0
-          && <div>
-          <h1 name="category" data-testid="question-category">
-            {questionList[currQuestion].category}
-          </h1>
-          <h3 name="text" data-testid="question-text">
-            {questionList[currQuestion].question}
-          </h3>
-          <div id="respostas">
-            { this.mapButtons() }
-          </div>
-        </div>
-        }
+        { !isLoading
+          && (
+            <div>
+              <h1 name="category" data-testid="question-category">
+                {questionList[currQuestion].category}
+              </h1>
+              <h3 name="text" data-testid="question-text">
+                {questionList[currQuestion].question}
+              </h3>
+              <div data-testid="answer-options">
+                { this.mapButtons() }
+              </div>
+            </div>
+          )}
       </div>
     );
   }
@@ -96,6 +85,8 @@ const mapStateToProps = (globalState) => ({
   gravatarEmail: globalState.player.gravatarEmail,
   token: globalState.token.token,
   questionList: globalState.questions.questionList,
+  currAnswers: globalState.answers.currAnswers,
+  correctAnswer: globalState.answers.correctAnswer,
 });
 
 export default connect(mapStateToProps)(Game);
