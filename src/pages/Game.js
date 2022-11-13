@@ -26,7 +26,8 @@ class Game extends React.Component {
     const url = `https://opentdb.com/api.php?amount=5&token=${token.token}`;
     await dispatch(fetchQuestions(url));
     const { questions, history } = this.props;
-    if (questions.response_code === 3) {
+    const errorCode = 3;
+    if (questions.response_code === errorCode) {
       history.push('/');
     } else {
       this.setState({
