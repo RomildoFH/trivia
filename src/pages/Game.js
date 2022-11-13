@@ -26,7 +26,7 @@ class Game extends React.Component {
     const url = `https://opentdb.com/api.php?amount=5&token=${token.token}`;
     await dispatch(fetchQuestions(url));
     const { questions, history } = this.props;
-    if (questions.response_code !== 0) {
+    if (questions.response_code === 3) {
       history.push('/');
     } else {
       this.setState({
@@ -34,7 +34,7 @@ class Game extends React.Component {
         loadingQuestions: false,
       }, () => setTimeout(() => {
         this.loadingValidate();
-      }, '2000'));
+      }, '1000'));
     }
   };
 
@@ -54,6 +54,23 @@ class Game extends React.Component {
     [arrCopy[rand], arrCopy[i]] = [arrCopy[i], arrCopy[rand]];
     return arrCopy[i];
   });
+
+  aplyStyle = ({ target }) => {
+    const { questions } = this.props;
+    const { currQuestion } = this.state;
+    const questionsArray = questions.results;
+    const questionObject = questionsArray[currQuestion];
+    const correctAnswer = questionObject.correct_answer;
+    if (target.innHTML === correctAnswer) {
+      const correct = document.getElementById('correct_answer');
+      correct.style.border = '3px solid rgb(6, 240, 15)';
+      console.log(target.innText);
+    } else {
+      const wrong = document.getElementById(target.id);
+      wrong.style.border = '3px solid red';
+      console.log(target.innText);
+    }
+  };
 
   renderGame = () => {
     const { questions } = this.props;
@@ -81,17 +98,21 @@ class Game extends React.Component {
               answer === correctAnswer
                 ? (
                   <button
+                    id="correct-answer"
                     type="button"
                     key={ index }
                     data-testid="correct-answer"
+                    onClick={ (event) => this.aplyStyle(event) }
                   >
                     { answer }
                   </button>)
                 : (
                   <button
+                    id={ `wrong-answer-${incorrectAnswers.indexOf(answer)}` }
                     type="button"
                     key={ index }
                     data-testid={ `wrong-answer-${incorrectAnswers.indexOf(answer)}` }
+                    onClick={ (event) => this.aplyStyle(event) }
                   >
                     { answer }
                   </button>)

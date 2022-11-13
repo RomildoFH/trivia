@@ -49,11 +49,11 @@ class Login extends React.Component {
     return validation;
   };
 
-  fetchTokenFun = () => {
+  fetchTokenFun = async () => {
     const { name, email } = this.state;
     const { dispatch } = this.props;
-    dispatch(fetchToken());
-    dispatch(actionLogin(name, email));
+    await dispatch(fetchToken());
+    await dispatch(actionLogin(name, email));
   };
 
   handleClick = async () => {
