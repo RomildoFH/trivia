@@ -113,9 +113,6 @@ const mapStateToProps = (globalState) => ({
   score: globalState.player.score,
   gravatarEmail: globalState.player.gravatarEmail,
   token: globalState.token.token,
-  questionList: globalState.questions.questionList,
-  currAnswers: globalState.answers.currAnswers,
-  correctAnswer: globalState.answers.correctAnswer,
 });
 
 export default connect(mapStateToProps)(Login);
