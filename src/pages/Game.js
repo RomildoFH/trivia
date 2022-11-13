@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
@@ -153,6 +154,7 @@ const mapStateToProps = (globalState) => ({
   gravatarEmail: globalState.gravatarEmail,
   token: globalState.token,
   questions: globalState.questions.questions,
+
 });
 
 export default connect(mapStateToProps)(Game);

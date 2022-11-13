@@ -1,10 +1,13 @@
 export const FAZER_LOGIN = 'FAZER_LOGIN';
 export const REQUEST_TOKEN_START = 'REQUEST_TOKEN_START';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
+export const REQUEST_QUESTIONS_START = 'REQUEST_QUESTIONS_START';
+export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const REQUEST_GRAVATAR_START = 'REQUEST_GRAVATAR_START';
 export const RECEIVE_GRAVATAR = 'RECEIVE_GRAVATAR';
 export const REQUEST_QUESTIONS_START = 'REQUEST_QUESTIONS_START';
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+
 
 export const actionLogin = (name, email) => ({
   type: FAZER_LOGIN,
@@ -21,14 +24,27 @@ export const receiveToken = (token) => ({
   token,
 });
 
+export const requestQuestions = () => ({
+  type: REQUEST_QUESTIONS_START,
+});
+
+export const receiveQuestions = (questions) => ({
+  type: RECEIVE_QUESTIONS,
+  questions,
+});
+
 const apiToken = 'https://opentdb.com/api_token.php?command=request';
 
 export const fetchToken = () => async (dispatch) => {
   dispatch(requestToken());
-  const response = await fetch(apiToken);
-  const tokenPromise = await response.json();
-  localStorage.setItem('token', tokenPromise.token);
-  return dispatch(receiveToken(tokenPromise));
+  try {
+    const response = await fetch(apiToken);
+    const tokenPromise = await response.json();
+    localStorage.setItem('token', tokenPromise.token);
+    dispatch(receiveToken(tokenPromise));
+  } catch (error) {
+    return error;
+  }
 };
 
 export const requestGravatar = () => ({
@@ -42,8 +58,22 @@ export const receiveGravatar = (gravatarEmail) => ({
 
 export const fetchGravatar = (url) => async (dispatch) => {
   dispatch(requestGravatar());
-  const response = await fetch(url);
-  return dispatch(receiveGravatar(response.url));
+  try {
+    const response = await fetch(url);
+    dispatch(receiveGravatar(response.url));
+  } catch (error) {
+    return error;
+  }
+};
+
+export const fetchQuestions = (token) => async (dispatch) => {
+  dispatch(requestQuestions());
+  try {
+    const response = await questionResponse(token);
+    dispatch(receiveQuestions(response));
+  } catch (error) {
+    return error;
+  }
 };
 
 export const requestQuestions = () => ({

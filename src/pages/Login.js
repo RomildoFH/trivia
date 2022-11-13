@@ -108,11 +108,14 @@ Login.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (globalState) => ({
-  name: globalState.name,
-  assertions: globalState.assertions,
-  score: globalState.score,
-  gravatarEmail: globalState.gravatarEmail,
-  token: globalState.token,
+  name: globalState.player.name,
+  assertions: globalState.player.assertions,
+  score: globalState.player.score,
+  gravatarEmail: globalState.player.gravatarEmail,
+  token: globalState.token.token,
+  questionList: globalState.questions.questionList,
+  currAnswers: globalState.answers.currAnswers,
+  correctAnswer: globalState.answers.correctAnswer,
 });
 
 export default connect(mapStateToProps)(Login);
