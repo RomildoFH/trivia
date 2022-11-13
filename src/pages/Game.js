@@ -156,3 +156,5 @@ const mapStateToProps = (globalState) => ({
 });
 
 export default connect(mapStateToProps)(Game);
+
+// alteração
