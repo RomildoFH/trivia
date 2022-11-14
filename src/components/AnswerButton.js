@@ -1,25 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
-class Button extends React.Component {
+class Answerbutton extends React.Component {
   render() {
-    const { testid, label } = this.props;
+    const { id, testid, buttonName, handleResponse, borderStyle, response } = this.props;
+    const border = response ? borderStyle : '1px solid black';
     return (
-      <button type="button" data-testid={ testid }>
-        { label }
+      <button
+        id={ id }
+        type="button"
+        data-testid={ testid }
+        style={ { border } }
+        onClick={ handleResponse }
+      >
+        { buttonName }
       </button>
     );
   }
 }
 
-Button.propTypes = {
-  testid: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-};
+Answerbutton.propTypes = {
+  id: PropTypes.string,
+  testid: PropTypes.string,
+  buttonName: PropTypes.string,
+}.isRequired;
 
-const mapStateToProps = (globalState) => ({
-  questionList: globalState.questionList,
-});
-
-export default connect(mapStateToProps)(Button);
+export default Answerbutton;
