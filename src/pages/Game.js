@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { fetchQuestions } from '../redux/actions';
+import Answerbutton from '../components/AnswerButton';
 
 class Game extends React.Component {
   constructor() {
@@ -12,6 +13,7 @@ class Game extends React.Component {
       loadingQuestions: true,
       isLoading: true,
       currQuestion: 0,
+      response: false,
       // questionType: '',
       // questionTitle: '',
     };
@@ -33,9 +35,10 @@ class Game extends React.Component {
       this.setState({
         tokenValidating: false,
         loadingQuestions: false,
+        alreadyRandom: false,
       }, () => setTimeout(() => {
         this.loadingValidate();
-      }, '1000'));
+      }, '0'));
     }
   };
 
@@ -56,25 +59,15 @@ class Game extends React.Component {
     return arrCopy[i];
   });
 
-  aplyStyle = ({ target }) => {
-    const { questions } = this.props;
-    const { currQuestion } = this.state;
-    const questionsArray = questions.results;
-    const questionObject = questionsArray[currQuestion];
-    const correctAnswer = questionObject.correct_answer;
-    if (target.innHTML === correctAnswer) {
-      const correct = document.getElementById('correct_answer');
-      correct.style.border = '3px solid rgb(6, 240, 15)';
-      console.log(target.innText);
-    } else {
-      const wrong = document.getElementById(target.id);
-      wrong.style.border = '3px solid red';
-      console.log(target.innText);
-    }
+  handleResponse = () => {
+    this.setState({
+      response: true,
+    });
   };
 
   renderGame = () => {
     const { questions } = this.props;
+    const { response, alreadyRandom } = this.state;
     console.log('render game chamado');
     // console.log(questions);
     const { currQuestion } = this.state;
@@ -86,7 +79,7 @@ class Game extends React.Component {
     const incorrectAnswers = questionObject.incorrect_answers;
     const answersArray = [correctAnswer, ...incorrectAnswers];
     console.log(answersArray);
-    const randomArray = this.getShuffledArr(answersArray);
+    const randomArray = alreadyRandom ? answersArray : this.getShuffledArr(answersArray);
     // console.log(randomArray);
     // console.log(answersArray);
     return (
@@ -98,25 +91,29 @@ class Game extends React.Component {
             randomArray.map((answer, index) => (
               answer === correctAnswer
                 ? (
-                  <button
+                  <Answerbutton
                     id="correct-answer"
-                    type="button"
                     key={ index }
-                    data-testid="correct-answer"
-                    onClick={ (event) => this.aplyStyle(event) }
+                    testid="correct-answer"
+                    buttonName={ answer }
+                    borderStyle="3px solid rgb(6, 240, 15)"
+                    handleResponse={ this.handleResponse }
+                    response={ response }
                   >
                     { answer }
-                  </button>)
+                  </Answerbutton>)
                 : (
-                  <button
+                  <Answerbutton
                     id={ `wrong-answer-${incorrectAnswers.indexOf(answer)}` }
-                    type="button"
                     key={ index }
-                    data-testid={ `wrong-answer-${incorrectAnswers.indexOf(answer)}` }
-                    onClick={ (event) => this.aplyStyle(event) }
+                    testid={ `wrong-answer-${incorrectAnswers.indexOf(answer)}` }
+                    buttonName={ answer }
+                    borderStyle="3px solid red"
+                    handleResponse={ this.handleResponse }
+                    response={ response }
                   >
                     { answer }
-                  </button>)
+                  </Answerbutton>)
             ))
           }
         </div>
@@ -157,5 +154,3 @@ const mapStateToProps = (globalState) => ({
 });
 
 export default connect(mapStateToProps)(Game);
-
-// alteração
