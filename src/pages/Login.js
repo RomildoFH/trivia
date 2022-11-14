@@ -97,6 +97,14 @@ class Login extends React.Component {
               Setting
             </button>
           </Link>
+          <Link to="/ranking">
+            <button
+              type="button"
+              data-testid="btn-ranking"
+            >
+              Ranking
+            </button>
+          </Link>
         </form>
       </div>
     );
