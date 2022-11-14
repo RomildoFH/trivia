@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 
 class Answerbutton extends React.Component {
   render() {
-    const { id, testid, buttonName, handleResponse, borderStyle, response } = this.props;
+    const {
+      id,
+      testid,
+      buttonName,
+      handleResponse,
+      borderStyle,
+      response,
+      disabled,
+    } = this.props;
     const border = response ? borderStyle : '1px solid black';
     return (
       <button
@@ -12,6 +20,7 @@ class Answerbutton extends React.Component {
         data-testid={ testid }
         style={ { border } }
         onClick={ handleResponse }
+        disabled={ disabled }
       >
         { buttonName }
       </button>
