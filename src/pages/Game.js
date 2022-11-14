@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { fetchQuestions } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -14,8 +15,7 @@ class Game extends React.Component {
       isLoading: true,
       currQuestion: 0,
       response: false,
-      // questionType: '',
-      // questionTitle: '',
+      expired: false,
     };
   }
 
@@ -65,9 +65,16 @@ class Game extends React.Component {
     });
   };
 
+  expireQuestion = () => {
+    console.log('expirou');
+    this.setState({
+      expired: true,
+    });
+  };
+
   renderGame = () => {
     const { questions } = this.props;
-    const { response, alreadyRandom } = this.state;
+    const { response, alreadyRandom, expired } = this.state;
     console.log('render game chamado');
     // console.log(questions);
     const { currQuestion } = this.state;
@@ -99,6 +106,7 @@ class Game extends React.Component {
                     borderStyle="3px solid rgb(6, 240, 15)"
                     handleResponse={ this.handleResponse }
                     response={ response }
+                    disabled={ expired }
                   >
                     { answer }
                   </Answerbutton>)
@@ -111,6 +119,7 @@ class Game extends React.Component {
                     borderStyle="3px solid red"
                     handleResponse={ this.handleResponse }
                     response={ response }
+                    disabled={ expired }
                   >
                     { answer }
                   </Answerbutton>)
@@ -128,9 +137,10 @@ class Game extends React.Component {
         {
           tokenValidating ? (<p>Validando dados de acesso</p>) : (<Header />)
         }
-        {
+        {/* {
           console.log(`o isLoading é ${isLoading}`)
-        }
+        } */}
+        <Timer expireQuestion={ this.expireQuestion } />
         {
           (isLoading) ? (<p>Carregando jogo</p>) : (this.renderGame())
         }
