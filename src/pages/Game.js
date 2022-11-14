@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchQuestions } from '../redux/actions';
+import { fetchQuestions, increaseScore } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
 import Timer from '../components/Timer';
 
@@ -16,12 +16,35 @@ class Game extends React.Component {
       currQuestion: 0,
       response: false,
       expired: false,
+      score: 0,
     };
   }
 
   async componentDidMount() {
     await this.validateLogin();
   }
+
+  handleScore = ({ target: { id } }) => {
+    const { currQuestion } = this.state;
+    const { time, questions, dispatch, score } = this.props;
+    const ten = 10;
+    if (id === 'correct-answer') {
+      const questionsArray = questions.results;
+      const questionObject = questionsArray[currQuestion];
+      const questionDifficulty = questionObject.difficulty;
+      const difficultyValue = { hard: 3, medium: 2, easy: 1 };
+      const valueScore = ten + (time * difficultyValue[questionDifficulty]);
+      const sum = score + valueScore;
+      dispatch(increaseScore(sum, 1));
+      this.setState({
+        expired: true,
+      });
+    } else {
+      this.setState({
+        expired: true,
+      });
+    }
+  };
 
   validateLogin = async () => {
     const { dispatch, token } = this.props;
@@ -35,7 +58,6 @@ class Game extends React.Component {
       this.setState({
         tokenValidating: false,
         loadingQuestions: false,
-        alreadyRandom: false,
       }, () => setTimeout(() => {
         this.loadingValidate();
       }, '0'));
@@ -52,13 +74,6 @@ class Game extends React.Component {
     }
   };
 
-  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-  getShuffledArr = (arr) => [...arr].map((_, i, arrCopy) => {
-    const rand = i + (Math.floor(Math.random() * (arrCopy.length - i)));
-    [arrCopy[rand], arrCopy[i]] = [arrCopy[i], arrCopy[rand]];
-    return arrCopy[i];
-  });
-
   handleResponse = () => {
     this.setState({
       response: true,
@@ -66,7 +81,6 @@ class Game extends React.Component {
   };
 
   expireQuestion = () => {
-    console.log('expirou');
     this.setState({
       expired: true,
     });
@@ -74,9 +88,7 @@ class Game extends React.Component {
 
   renderGame = () => {
     const { questions } = this.props;
-    const { response, alreadyRandom, expired } = this.state;
-    console.log('render game chamado');
-    // console.log(questions);
+    const { response, expired } = this.state;
     const { currQuestion } = this.state;
     const questionsArray = questions.results;
     const questionObject = questionsArray[currQuestion];
@@ -84,18 +96,14 @@ class Game extends React.Component {
     const questionTitle = questionObject.question;
     const correctAnswer = questionObject.correct_answer;
     const incorrectAnswers = questionObject.incorrect_answers;
-    const answersArray = [correctAnswer, ...incorrectAnswers];
-    console.log(answersArray);
-    const randomArray = alreadyRandom ? answersArray : this.getShuffledArr(answersArray);
-    // console.log(randomArray);
-    // console.log(answersArray);
+    const { shuffledAlternatives } = questionObject;
     return (
       <div>
         <h2 data-testid="question-text">{ questionTitle }</h2>
         <h4 data-testid="question-category">{ questionType }</h4>
         <div data-testid="answer-options">
           {
-            randomArray.map((answer, index) => (
+            shuffledAlternatives.map((answer, index) => (
               answer === correctAnswer
                 ? (
                   <Answerbutton
@@ -107,6 +115,7 @@ class Game extends React.Component {
                     handleResponse={ this.handleResponse }
                     response={ response }
                     disabled={ expired }
+                    handleScore={ this.handleScore }
                   >
                     { answer }
                   </Answerbutton>)
@@ -120,6 +129,7 @@ class Game extends React.Component {
                     handleResponse={ this.handleResponse }
                     response={ response }
                     disabled={ expired }
+                    handleScore={ this.handleScore }
                   >
                     { answer }
                   </Answerbutton>)
@@ -131,15 +141,13 @@ class Game extends React.Component {
   };
 
   render() {
-    const { tokenValidating, isLoading } = this.state;
+    const { tokenValidating, isLoading, score } = this.state;
     return (
       <div>
         {
-          tokenValidating ? (<p>Validando dados de acesso</p>) : (<Header />)
+          tokenValidating ? (<p>Validando dados de acesso</p>)
+            : (<Header score={ score } />)
         }
-        {/* {
-          console.log(`o isLoading é ${isLoading}`)
-        } */}
         <Timer expireQuestion={ this.expireQuestion } />
         {
           (isLoading) ? (<p>Carregando jogo</p>) : (this.renderGame())
@@ -151,15 +159,17 @@ class Game extends React.Component {
 
 Game.propTypes = {
   dispatch: PropTypes.func,
+  time: PropTypes.number,
 }.isRequired;
 
 const mapStateToProps = (globalState) => ({
   name: globalState.name,
   assertions: globalState.assertions,
-  score: globalState.score,
+  score: globalState.player.score,
   gravatarEmail: globalState.gravatarEmail,
   token: globalState.token,
   questions: globalState.questions.questions,
+  time: globalState.timer.time,
 
 });
 

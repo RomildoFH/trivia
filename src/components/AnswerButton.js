@@ -11,6 +11,7 @@ class Answerbutton extends React.Component {
       borderStyle,
       response,
       disabled,
+      handleScore,
     } = this.props;
     const border = response ? borderStyle : '1px solid black';
     return (
@@ -19,7 +20,7 @@ class Answerbutton extends React.Component {
         type="button"
         data-testid={ testid }
         style={ { border } }
-        onClick={ handleResponse }
+        onClick={ (e) => { handleResponse(); handleScore(e); } }
         disabled={ disabled }
       >
         { buttonName }

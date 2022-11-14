@@ -1,8 +1,8 @@
-import { FAZER_LOGIN, RECEIVE_GRAVATAR } from '../actions';
+import { FAZER_LOGIN, RECEIVE_GRAVATAR, INCREASE_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -19,6 +19,12 @@ const player = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       gravatarEmail: action.gravatarEmail,
+    });
+  case INCREASE_SCORE:
+    return ({
+      ...state,
+      score: action.score,
+      assertions: state.assertions + action.assertions,
     });
   default:
     return state;
