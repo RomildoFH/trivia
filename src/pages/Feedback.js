@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
@@ -8,21 +9,44 @@ class Feedback extends React.Component {
     const { assertions } = this.props;
     const passValue = 3;
     return assertions < passValue ? (
-      <p data-testid="feedback-text">Could be better...</p>
+      <h1 data-testid="feedback-text">Could be better...</h1>
     )
       : (
-        <p data-testid="feedback-text">Well Done!</p>
+        <h1 data-testid="feedback-text">Well Done!</h1>
       );
   };
 
   render() {
+    const { assertions, score } = this.props;
     return (
       <div>
         <Header />
-        <h1>Feedback</h1>
         {
           this.feedbackMessage()
         }
+        <div>
+          <p>
+            Sua pontuação:
+            {' '}
+            <span data-testid="feedback-total-score">{score}</span>
+          </p>
+          <p>
+            Acertos:
+            {' '}
+            <span data-testid="feedback-total-question">{assertions}</span>
+          </p>
+        </div>
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Play Again</button>
+        </Link>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ranking
+          </button>
+        </Link>
       </div>
     );
   }
@@ -30,11 +54,16 @@ class Feedback extends React.Component {
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  // name: PropTypes.string.isRequired,
+  // gravatarEmail: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (globalState) => ({
+  name: globalState.player.name,
   assertions: globalState.player.assertions,
-  gravatarEmail: globalState.gravatarEmail,
+  score: globalState.player.score,
+  gravatarEmail: globalState.player.gravatarEmail,
 });
 
 export default connect(mapStateToProps)(Feedback);

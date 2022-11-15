@@ -1,18 +1,18 @@
 const mockRanking = [
   {
-    gravatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d52',
-    nome: 'Sr. Mock 01',
-    score: 50,
+    gravatarEmail: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d52',
+    name: 'Nome da Pessoa',
+    score: 350,
   },
   {
-    gravatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d53',
-    nome: 'Sr. Mock 02',
-    score: 80,
+    gravatarEmail: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d53',
+    name: 'Outra pessoa',
+    score: 350,
   },
   {
-    gravatar: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d54',
-    nome: 'Sr. Mock 03',
-    score: 82,
+    gravatarEmail: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d54',
+    name: 'Mais uma pessoa',
+    score: 390,
   },
 ];
 

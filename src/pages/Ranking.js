@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import mockRanking from '../components/helpers/mockRanking';
+// import mockRanking from '../components/helpers/mockRanking';
 
 class Ranking extends React.Component {
   componentDidMount() {
@@ -10,7 +10,7 @@ class Ranking extends React.Component {
   }
 
   render() {
-    localStorage.setItem('ranking', JSON.stringify(mockRanking));
+    // localStorage.setItem('ranking', JSON.stringify(mockRanking));
     const rankingArray = JSON.parse(localStorage.getItem('ranking'));
     const newArray = rankingArray.sort((a, b) => b.score - a.score);
     return (
@@ -23,8 +23,8 @@ class Ranking extends React.Component {
           {
             newArray.map((user, index) => (
               <div key={ index }>
-                <img src={ user.gravatar } alt={ `gravatar-${user.nome}` } />
-                <h3 data-testid={ `player-name-${index}` }>{ user.nome }</h3>
+                <img src={ user.gravatarEmail } alt={ `gravatar-${user.name}` } />
+                <h3 data-testid={ `player-name-${index}` }>{ user.name }</h3>
                 <h4 data-testid={ `player-score-${index}` }>
                   Score:
                   {' '}

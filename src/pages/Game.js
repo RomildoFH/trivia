@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import { fetchQuestions, increaseScore, updateTimer } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
@@ -165,10 +166,25 @@ class Game extends React.Component {
 
   handleNext = () => {
     const { currQuestion, expired } = this.state;
-    const { history } = this.props;
+    const { history, name, assertions, gravatarEmail, score } = this.props;
     const maxIndexQuestions = 4;
+    const hash = md5(gravatarEmail).toString();
+    const url = `https://www.gravatar.com/avatar/${hash}`;
     if (currQuestion === maxIndexQuestions && expired === true) {
       history.push('/feedback');
+      let storedRanking = [];
+      const currRanking = { name, assertions, gravatarEmail: url, score };
+      console.log(currRanking);
+      let newRanking = [];
+      if (localStorage.getItem('ranking')) {
+        storedRanking = JSON.parse(localStorage.getItem('ranking'));
+        newRanking = [...storedRanking, currRanking];
+        console.log(newRanking);
+      }
+      if (!localStorage.getItem('ranking')) {
+        newRanking = [currRanking];
+      }
+      localStorage.setItem('ranking', JSON.stringify(newRanking));
     } else {
       this.nextQuestion();
     }
@@ -222,14 +238,13 @@ Game.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (globalState) => ({
-  name: globalState.name,
-  assertions: globalState.assertions,
+  name: globalState.player.name,
+  assertions: globalState.player.assertions,
   score: globalState.player.score,
-  gravatarEmail: globalState.gravatarEmail,
+  gravatarEmail: globalState.player.gravatarEmail,
   token: globalState.token,
   questions: globalState.questions.questions,
   time: globalState.timer.time,
-
 });
 
 export default connect(mapStateToProps)(Game);
