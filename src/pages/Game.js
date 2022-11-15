@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchQuestions, increaseScore } from '../redux/actions';
+import { fetchQuestions, increaseScore, updateTimer } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
 import Timer from '../components/Timer';
 
@@ -17,6 +17,8 @@ class Game extends React.Component {
       response: false,
       expired: false,
       score: 0,
+      freeze: false,
+      counting: true,
     };
   }
 
@@ -77,13 +79,34 @@ class Game extends React.Component {
   handleResponse = () => {
     this.setState({
       response: true,
+      freeze: true,
+      counting: false,
     });
   };
 
   expireQuestion = () => {
     this.setState({
       expired: true,
+      counting: false,
+      freeze: true,
     });
+  };
+
+  nextQuestion = () => {
+    const { dispatch } = this.props;
+    const { currQuestion } = this.state;
+    const maxIndexQuestions = 4;
+    const maxTime = 30;
+    dispatch(updateTimer(maxTime));
+    if (currQuestion < maxIndexQuestions) {
+      this.setState((prevState) => ({
+        currQuestion: prevState.currQuestion + 1,
+        response: false,
+        expired: false,
+        freeze: false,
+        counting: true,
+      }));
+    }
   };
 
   renderGame = () => {
@@ -140,17 +163,53 @@ class Game extends React.Component {
     );
   };
 
+  handleNext = () => {
+    const { currQuestion, expired } = this.state;
+    const { history } = this.props;
+    const maxIndexQuestions = 4;
+    if (currQuestion === maxIndexQuestions && expired === true) {
+      history.push('/feedback');
+    } else {
+      this.nextQuestion();
+    }
+  };
+
   render() {
-    const { tokenValidating, isLoading, score } = this.state;
+    const {
+      tokenValidating,
+      isLoading,
+      score,
+      expired,
+      freeze,
+      counting,
+      currQuestion,
+    } = this.state;
     return (
       <div>
         {
           tokenValidating ? (<p>Validando dados de acesso</p>)
             : (<Header score={ score } />)
         }
-        <Timer expireQuestion={ this.expireQuestion } />
+        <Timer
+          expireQuestion={ this.expireQuestion }
+          freeze={ freeze }
+          counting={ counting }
+          currQuestion={ currQuestion }
+        />
         {
           (isLoading) ? (<p>Carregando jogo</p>) : (this.renderGame())
+        }
+        {
+          expired
+            && (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.handleNext }
+              >
+                Next
+              </button>
+            )
         }
       </div>
     );
