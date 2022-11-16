@@ -7,6 +7,7 @@ export const REQUEST_QUESTIONS_START = 'REQUEST_QUESTIONS_START';
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 export const INCREASE_SCORE = 'INCREASE_SCORE';
+export const RESET_SCORE = 'RESET_SCORE';
 
 export const actionLogin = (name, email) => ({
   type: FAZER_LOGIN,
@@ -95,4 +96,8 @@ export const increaseScore = (score, assertions) => ({
   type: INCREASE_SCORE,
   score,
   assertions,
+});
+
+export const resetScore = () => ({
+  type: RESET_SCORE,
 });

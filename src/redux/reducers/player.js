@@ -1,4 +1,4 @@
-import { FAZER_LOGIN, RECEIVE_GRAVATAR, INCREASE_SCORE } from '../actions';
+import { FAZER_LOGIN, RECEIVE_GRAVATAR, INCREASE_SCORE, RESET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -25,6 +25,12 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       score: action.score,
       assertions: state.assertions + action.assertions,
+    });
+  case RESET_SCORE:
+    return ({
+      ...state,
+      score: 0,
+      assertions: 0,
     });
   default:
     return state;

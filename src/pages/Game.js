@@ -6,21 +6,12 @@ import Header from '../components/Header';
 import { fetchQuestions, increaseScore, updateTimer } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
 import Timer from '../components/Timer';
+import gameInitialState from './helpers/gameState';
 
 class Game extends React.Component {
   constructor() {
     super();
-    this.state = {
-      tokenValidating: true,
-      loadingQuestions: true,
-      isLoading: true,
-      currQuestion: 0,
-      response: false,
-      expired: false,
-      score: 0,
-      freeze: false,
-      counting: true,
-    };
+    this.state = gameInitialState;
   }
 
   async componentDidMount() {
