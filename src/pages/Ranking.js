@@ -10,9 +10,9 @@ class Ranking extends React.Component {
   }
 
   render() {
-    // localStorage.setItem('ranking', JSON.stringify(mockRanking));
-    const rankingArray = JSON.parse(localStorage.getItem('ranking'));
-    const newArray = rankingArray.sort((a, b) => b.score - a.score);
+    // const newArray = mockRanking.sort((a, b) => b.score - a.score);
+    // localStorage.setItem('ranking', JSON.stringify(newArray));
+    const newArray2 = JSON.parse(localStorage.getItem('ranking'));
     return (
       <div>
         <Link to="/">
@@ -21,7 +21,7 @@ class Ranking extends React.Component {
         <h1 data-testid="ranking-title">Ranking</h1>
         <div>
           {
-            newArray.map((user, index) => (
+            newArray2.map((user, index) => (
               <div key={ index }>
                 <img src={ user.gravatarEmail } alt={ `gravatar-${user.name}` } />
                 <h3 data-testid={ `player-name-${index}` }>{ user.name }</h3>

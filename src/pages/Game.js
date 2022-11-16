@@ -63,7 +63,7 @@ class Game extends React.Component {
         loadingQuestions: false,
       }, () => setTimeout(() => {
         this.loadingValidate();
-      }, '0'));
+      }, ''));
     }
   };
 
@@ -174,12 +174,11 @@ class Game extends React.Component {
       history.push('/feedback');
       let storedRanking = [];
       const currRanking = { name, assertions, gravatarEmail: url, score };
-      console.log(currRanking);
       let newRanking = [];
       if (localStorage.getItem('ranking')) {
         storedRanking = JSON.parse(localStorage.getItem('ranking'));
         newRanking = [...storedRanking, currRanking];
-        console.log(newRanking);
+        newRanking.sort((a, b) => b.score - a.score);
       }
       if (!localStorage.getItem('ranking')) {
         newRanking = [currRanking];

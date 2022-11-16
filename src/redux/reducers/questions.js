@@ -1,7 +1,10 @@
 import { REQUEST_QUESTIONS_START, RECEIVE_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
-  questions: {},
+  questions: {
+    // response_code: '',
+    // results: ['restults1'],
+  },
 
 };
 
