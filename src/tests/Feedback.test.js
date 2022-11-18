@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 import App from "../App";
+import mockQuestions from "./mock/mockQuestions";
 
 describe("Testes da página de Feedback", () => {
     const nameId = "input-player-name";
@@ -23,6 +24,14 @@ describe("Testes da página de Feedback", () => {
     });
 
     it("Verificando o botão 'Ranking' de Feedback", async () => {
+
+        jest.resetAllMocks();
+
+        jest.spyOn(global, 'fetch');
+        global.fetch.mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockQuestions),
+        });
+
         const { history } = renderWithRouterAndRedux(<App />);
         history.push('/feedback');
         await waitFor(() => {
@@ -36,6 +45,14 @@ describe("Testes da página de Feedback", () => {
     });
 
     it("Verificando o botão 'Play Again' de Feedback", async () => {
+
+        jest.resetAllMocks();
+
+        jest.spyOn(global, 'fetch');
+        global.fetch.mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockQuestions),
+        });
+
         const { history } = renderWithRouterAndRedux(<App />);
         history.push('/feedback');
         await waitFor(() => {

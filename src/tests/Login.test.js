@@ -5,6 +5,7 @@ import { renderWithRouterAndRedux } from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 import data from './helpers/constants';
 import mockToken from './mock/mockToken';
+import mockQuestions from './mock/mockQuestions';
 
 describe('Página de login', () => {
   beforeEach(() => {
@@ -68,6 +69,14 @@ describe('Página de login', () => {
   });
 
   it('Verifica se ao clicar no botão Play a função fetch é chamada e é feito redirecionamento para pagina Game', async () => {
+
+    jest.resetAllMocks();
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockQuestions),
+    });
+
     renderWithRouterAndRedux(<App />);
 
     const inputEmail = screen.getByTestId('input-gravatar-email');
@@ -82,7 +91,7 @@ describe('Página de login', () => {
 
     expect(global.fetch).toBeCalled();
 
-    const gameTitle = await screen.findByRole('heading', { name: 'Game' });
-    expect(gameTitle).toBeInTheDocument();
+    const questionTitle = await screen.findByTestId('question-text');
+    expect(questionTitle).toBeInTheDocument();
   });
 });
