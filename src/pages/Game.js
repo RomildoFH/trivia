@@ -46,7 +46,7 @@ class Game extends React.Component {
     await dispatch(fetchQuestions(url));
     const { questions, history } = this.props;
     const errorCode = 3;
-    if (questions.response_code === errorCode) {
+    if (questions.response_code === errorCode || token.token === 'INVALID_TOKEN') {
       history.push('/');
     } else {
       this.setState({

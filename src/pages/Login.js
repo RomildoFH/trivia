@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { actionLogin, fetchToken, resetScore } from '../redux/actions';
+import '../styles/Login.css';
+import '../images/logo trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -68,6 +70,7 @@ class Login extends React.Component {
     dispatch(resetScore());
     return (
       <div>
+        <div className="logo-container" />
         <form>
           <input
             name="email"
@@ -75,6 +78,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
             data-testid="input-gravatar-email"
             value={ email }
+            placeholder="Informe um e-mail válido"
           />
           <input
             name="name"
@@ -82,6 +86,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
             data-testid="input-player-name"
             value={ name }
+            placeholder="Seu nome"
           />
           <button
             type="button"
