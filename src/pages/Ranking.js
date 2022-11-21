@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import '../styles/Ranking.css';
 // import mockRanking from '../components/helpers/mockRanking';
 
 class Ranking extends React.Component {
@@ -15,24 +16,42 @@ class Ranking extends React.Component {
     const newArray2 = JSON.parse(localStorage.getItem('ranking'));
     return (
       <div>
-        <Link to="/">
-          <button type="button" data-testid="btn-go-home">Home</button>
-        </Link>
-        <h1 data-testid="ranking-title">Ranking</h1>
-        <div>
-          {
-            newArray2.map((user, index) => (
-              <div key={ index }>
-                <img src={ user.gravatarEmail } alt={ `gravatar-${user.name}` } />
-                <h3 data-testid={ `player-name-${index}` }>{ user.name }</h3>
-                <h4 data-testid={ `player-score-${index}` }>
-                  Score:
-                  {' '}
-                  { user.score }
-                </h4>
-              </div>
-            ))
-          }
+        <div className="logo-container" />
+        <div id="ranking-box">
+          <h1 data-testid="ranking-title">Ranking</h1>
+          <div>
+            {
+              newArray2.map((user, index) => (
+                <div className="usr-score-container" key={ index }>
+                  <div className="pfp-name">
+                    <img
+                      src={ user.gravatarEmail }
+                      alt={ `gravatar-${user.name}` }
+                      className="profile-img"
+                    />
+                    <h3 data-testid={ `player-name-${index}` }>{ user.name }</h3>
+                    <div className="score">
+                      <div className="star-container" />
+                      <h4 data-testid={ `player-score-${index}` }>
+                        Score:
+                        {' '}
+                        { user.score }
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <Link to="/">
+            <button
+              type="button"
+              id="ranking-button"
+              data-testid="btn-go-home"
+            >
+              Home
+            </button>
+          </Link>
         </div>
       </div>
     );
