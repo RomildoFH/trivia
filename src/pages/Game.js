@@ -7,6 +7,7 @@ import { fetchQuestions, increaseScore, updateTimer } from '../redux/actions';
 import Answerbutton from '../components/AnswerButton';
 import Timer from '../components/Timer';
 import gameInitialState from './helpers/gameState';
+import '../styles/Game.css';
 
 class Game extends React.Component {
   constructor() {
@@ -113,10 +114,10 @@ class Game extends React.Component {
     const incorrectAnswers = questionObject.incorrect_answers;
     const { shuffledAlternatives } = questionObject;
     return (
-      <div>
+      <div className="game-container">
         <h2 data-testid="question-text">{ questionTitle }</h2>
         <h4 data-testid="question-category">{ questionType }</h4>
-        <div data-testid="answer-options">
+        <div data-testid="answer-options" className="answer-options">
           {
             shuffledAlternatives.map((answer, index) => (
               answer === correctAnswer
@@ -207,15 +208,16 @@ class Game extends React.Component {
         }
         {
           expired
-            && (
-              <button
-                type="button"
-                data-testid="btn-next"
-                onClick={ this.handleNext }
-              >
-                Next
-              </button>
-            )
+              && (
+                <button
+                  type="button"
+                  data-testid="btn-next"
+                  onClick={ this.handleNext }
+                  className="btn-next"
+                >
+                  Next
+                </button>
+              )
         }
       </div>
     );

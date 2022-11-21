@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { resetScore } from '../redux/actions';
+import '../styles/Feedback.css';
 
 class Feedback extends React.Component {
   feedbackMessage = () => {

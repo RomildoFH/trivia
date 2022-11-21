@@ -63,12 +63,17 @@ class Timer extends React.Component {
   render() {
     const { time } = this.state;
     return (
-      <h3
-        id="timer-component"
-        data-testid="timer"
-      >
-        { time }
-      </h3>
+      <p>
+        Tempo:
+        {' '}
+        <span
+          id="timer-component"
+          data-testid="timer"
+        >
+          { time }
+        </span>
+
+      </p>
     );
   }
 }

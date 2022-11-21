@@ -1,0 +1,29 @@
+.game-container {
+  align-items: center;
+  background: rgb(238, 237, 237);
+  border-radius: 10px;
+  box-shadow: 1px 4px 13px 2px rgba(0, 0, 0, 0.2);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  text-align: center;
+  width: 600px;
+}
+
+.answer-options {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2, h4 {
+  color: darkgreen;
+  text-shadow: 1px 1px 0 black;
+}
+
+.btn-next {
+  margin: 50px;
+  width: 200px;
+}

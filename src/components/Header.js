@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import '../styles/Header.css';
 
 class Header extends React.Component {
   render() {
@@ -10,9 +11,13 @@ class Header extends React.Component {
     const url = `https://www.gravatar.com/avatar/${hash}`;
     return (
       <div>
-        <img src={ url } alt="gravatar" data-testid="header-profile-picture" />
-        <h3 data-testid="header-player-name">{ name }</h3>
-        <p data-testid="header-score">{ score }</p>
+        <div className="user-card">
+          <img src={ url } alt="gravatar" data-testid="header-profile-picture" />
+          <div className="user-data">
+            <h3 data-testid="header-player-name">{ name }</h3>
+            <p data-testid="header-score">{ score }</p>
+          </div>
+        </div>
       </div>
     );
   }

@@ -22,7 +22,11 @@ class Ranking extends React.Component {
           <div>
             {
               newArray2.map((user, index) => (
-                <div className="usr-score-container" key={ index }>
+                <div
+                  className="usr-score-container"
+                  data-testid="usr-score-container"
+                  key={ index }
+                >
                   <div className="pfp-name">
                     <img
                       src={ user.gravatarEmail }

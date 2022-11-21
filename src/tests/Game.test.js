@@ -6,6 +6,7 @@ import App from '../App';
 import data from './helpers/constants';
 import mockToken from './mock/mockToken';
 import mockQuestions from './mock/mockQuestions';
+import INVALID_QUESTIONS from './mock/mockInvalidQuestions';
 
 describe('Página de login', () => {
   beforeEach(() => {
@@ -362,29 +363,17 @@ describe('Página de login', () => {
   });
 
   it('Verifica se ao acessar o jogo com token inválido é redirecionado para a home', async () => {
-
-    const INVALID_TOKEN = {
-      "response_code":0,
-      "response_message":"Token Generated Successfully!",
-      "token":"INVALID_TOKEN"
-    }
-
-    const INVALID_QUESTIONS = {
-      "response_code":3,
-      "results":[]
-    }
-
+    
     jest.resetAllMocks();
 
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(INVALID_TOKEN),
+      json: jest.fn().mockResolvedValue(INVALID_QUESTIONS),
     });
 
-    jest.useFakeTimers()
+    // jest.useFakeTimers()
 
     const { history } = renderWithRouterAndRedux(<App />);
-    console.log(history.entries[0].pathname);
 
     const inputEmail = screen.getByTestId('input-gravatar-email');
     const inputName = screen.getByTestId('input-player-name');
@@ -396,28 +385,11 @@ describe('Página de login', () => {
     userEvent.type(inputName, data.VALID_NAME);
     userEvent.click(playBtn);
 
-    // expect(history.entries[0].pathname).toBe('/game');
-    // await waitFor(() => expect(history.entries[0].pathname).toBe('/game'))
-
-    expect(global.fetch).toBeCalled();
-
-    console.log(global);
-
-    jest.resetAllMocks();
-
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(INVALID_QUESTIONS),
+    const { pathname } = history.location;
+    expect(pathname).toBe('/');
+    act(() => {
+      history.push('/game');
     });
-
-    console.log(history.entries[0].pathname);
-
-    // act(() => jest.advanceTimersByTime(32000));
-
-    // const inputEmail2 = screen.getByTestId('input-gravatar-email');
-    // expect(inputEmail2.value).toBe('');
-    
-    jest.runOnlyPendingTimers()
-    jest.useRealTimers()
+    expect(pathname).toBe('/');
   });
 });

@@ -17,10 +17,12 @@ describe('Página de ranking', () => {
     const gravatarRanking0 = screen.getByAltText('gravatar-Nome da Pessoa');
     const nameRanking0 = screen.getByTestId('player-name-0');
     const scoreRanking0 = screen.getByTestId('player-score-0');
+    const scoreContainers = screen.getAllByTestId('usr-score-container');
     
     expect(gravatarRanking0).toBeInTheDocument();
     expect(nameRanking0).toBeInTheDocument();
     expect(scoreRanking0).toBeInTheDocument();
+    expect(scoreContainers[0]).toBeInTheDocument();
   });
 
 });

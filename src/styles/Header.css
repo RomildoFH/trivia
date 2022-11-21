@@ -1,0 +1,27 @@
+.user-card {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.user-data {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+img {
+  border-radius: 50%;
+  width: 120px;
+}
+
+p {
+  font-size: 20px;
+  font-weight: 700;
+}
