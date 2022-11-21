@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { actionLogin, fetchToken } from '../redux/actions';
+import { actionLogin, fetchToken, resetScore } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -64,6 +64,8 @@ class Login extends React.Component {
 
   render() {
     const { isDisabled, email, name } = this.state;
+    const { dispatch } = this.props;
+    dispatch(resetScore());
     return (
       <div>
         <form>
